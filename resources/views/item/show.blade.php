@@ -10,8 +10,54 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <h1 class="mb-6 text-lg font-bold">Detail Item</h1>
-
                     <div class="space-y-4">
+                        <div class="mt-6">
+                            <span class="font-semibold">Images:</span>
+
+                            @if ($item->images->count() > 0)
+                                <div id="itemCarousel" class="carousel slide" data-bs-ride="carousel">
+                                    <div class="carousel-inner">
+                                        @foreach ($item->images as $key => $image)
+                                            <div class="carousel-item {{ $key === 0 ? 'active' : '' }}">
+                                                <img src="{{ asset('storage/' . $image->image) }}" class="d-block w-100 rounded mb-2"
+                                                    alt="Item Image {{ $key+1 }}">
+
+                                                {{-- Tombol aksi --}}
+                                                <div class="d-flex justify-content-center mt-2">
+                                                    {{-- <a href="{{ route('admin.items.edit', $item->id) }}" 
+                                                    class="btn btn-sm btn-warning me-2">Edit</a> --}}
+
+                                                    <form method="POST" action="{{ route('admin.item-images.destroy', $image->id) }}" 
+                                                        onsubmit="return confirm('Yakin hapus gambar ini?')">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+
+                                    {{-- Navigasi Carousel --}}
+                                    <button class="carousel-control-prev" type="button" data-bs-target="#itemCarousel" data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon"></span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button" data-bs-target="#itemCarousel" data-bs-slide="next">
+                                        <span class="carousel-control-next-icon"></span>
+                                    </button>
+                                </div>
+                            @endif
+
+                        </div>
+                        <div class="mt-4">
+                                <form action="{{ route('admin.item-images.store', $item->id) }}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="mb-2">
+                                        <input type="file" name="image" class="form-control" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-sm">Tambah Gambar</button>
+                                </form>
+                            </div>
                         <div>
                             <span class="font-semibold">ID:</span>
                             <span>{{ $item->id }}</span>

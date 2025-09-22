@@ -11,9 +11,25 @@
                 <div class="p-6 text-gray-900">
                     <h1 class="mb-4">Add Item</h1>
 
-                    <form method="POST" action="{{ route('admin.items.store') }}">
+                    <form method="POST" action="{{ route('admin.items.store') }}" enctype="multipart/form-data">
                         @csrf
 
+                        {{-- Images --}}
+                        <div class="mb-4">
+                            <label for="images" class="block text-sm font-medium text-gray-700">
+                                Upload Images (max 5)
+                            </label>
+                            <input type="file" name="images[]" id="images" multiple
+                                accept="image/*"
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                            <p class="text-gray-500 text-sm mt-1">You can upload up to 5 images (jpg, jpeg, png, max 2MB each).</p>
+                            @error('images')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                            @error('images.*')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
                         {{-- Item Name --}}
                         <div class="mb-4">
                             <label for="name" class="block text-sm font-medium text-gray-700">

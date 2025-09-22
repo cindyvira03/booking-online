@@ -16,6 +16,7 @@ class Item extends Model
         'slug',
         'price',
         'description',
+        'status',
     ];
 
     /**
@@ -24,5 +25,19 @@ class Item extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', 'active');
+    }
+    public function images()
+    {
+        return $this->hasMany(ItemImage::class);
+    }
+
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
     }
 }

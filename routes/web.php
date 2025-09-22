@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ItemController;
+use App\Http\Controllers\Admin\ItemImageController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -36,6 +37,12 @@ Route::middleware(['auth', 'isadmin'])->prefix('admin')->name('admin.')->group(f
     Route::put('/items/update/{id}', [ItemController::class, 'update'])->name('items.update');
     Route::get('/items/{id}', [ItemController::class, 'show'])->name('items.show');
     Route::delete('/items/{id}', [ItemController::class, 'destroy'])->name('items.destroy');
+
+    // Item Images
+    Route::delete('/item-images/{id}', [ItemImageController::class, 'destroy'])->name('item-images.destroy');
+    Route::get('/item-images/{id}/edit', [ItemImageController::class, 'edit'])->name('item-images.edit');
+    Route::put('/item-images/{id}', [ItemImageController::class, 'update'])->name('item-images.update');
+    Route::post('/item-images/{item}', [ItemImageController::class, 'store'])->name('item-images.store');
 });
 
 require __DIR__ . '/auth.php';
