@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ItemController;
 use App\Http\Controllers\Admin\ItemImageController;
+use App\Http\Controllers\Admin\HistoryBookingController;
+use App\Http\Controllers\BookingController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -43,6 +45,14 @@ Route::middleware(['auth', 'isadmin'])->prefix('admin')->name('admin.')->group(f
     Route::get('/item-images/{id}/edit', [ItemImageController::class, 'edit'])->name('item-images.edit');
     Route::put('/item-images/{id}', [ItemImageController::class, 'update'])->name('item-images.update');
     Route::post('/item-images/{item}', [ItemImageController::class, 'store'])->name('item-images.store');
+
+    Route::get('/bookings', [HistoryBookingController::class, 'index'])->name('bookings.index');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
+    Route::get('/bookings/create/{item}', [BookingController::class, 'create'])->name('bookings.create');
+    Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
 });
 
 require __DIR__ . '/auth.php';
