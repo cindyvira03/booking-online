@@ -5,36 +5,33 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Booking extends Model
+class ItemRating extends Model
 {
     use HasFactory;
+
+    protected $table = 'item_ratings';
 
     protected $fillable = [
         'user_id',
         'item_id',
-        'booking_code',
-        'date',
-        'duration',
-        'total',
-        'fine',
-        'delay',
+        'rating',
+        'review',
         'status',
     ];
 
-    // Relasi ke User (satu booking dimiliki satu user)
+    /**
+     * Relasi ke User
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    // Relasi ke Item (satu booking untuk satu item)
+    /**
+     * Relasi ke Item
+     */
     public function item()
     {
         return $this->belongsTo(Item::class);
-    }
-
-    public function payments()
-    {
-        return $this->hasMany(BookingPayment::class);
     }
 }

@@ -52,4 +52,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Booking::class);
     }
+
+    public function itemRatings()
+    {
+        return $this->hasMany(ItemRating::class);
+    }
+
+    public function storeRatings()
+    {
+        return $this->hasMany(StoreRating::class, 'user_id');
+    }
 }

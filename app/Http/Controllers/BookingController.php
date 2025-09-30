@@ -9,11 +9,27 @@ use Illuminate\Support\Facades\Auth;
 
 class BookingController extends Controller
 {
-    // Tampilkan semua layanan yang bisa dibooking
-    public function index()
+    // Cek ketersediaan item berdasarkan tanggal
+    public function checkAvailability(Request $request)
     {
-        $items = Item::with('category', 'images')->get();
-        return view('bookings.index', compact('items'));
+        $request->validate([
+            'item_id' => 'required|exists:items,id',
+            'date' => 'required|date',
+        ]);
+
+        $exists = Booking::where('item_id', $request->item_id)
+            ->where('date', $request->date)
+            ->whereIn('status', ['pending', 'confirmed']) // dianggap sudah dipakai
+            ->exists();
+
+        $available = !$exists;
+
+        return response()->json([
+            'available' => $available,
+            'message'   => $available
+                ? 'Item tersedia, silakan lanjut checkout.'
+                : 'Item tidak tersedia pada tanggal ini.',
+        ]);
     }
 
     // Form booking untuk item tertentu
@@ -44,20 +60,20 @@ class BookingController extends Controller
         $item = Item::findOrFail($request->item_id);
 
         // Buat booking baru
-        $booking = new Booking();
-        $booking->user_id   = Auth::id();          // user login
-        $booking->item_id   = $item->id;
-        $booking->booking_code = 'BK-' . strtoupper(uniqid()); // kode unik
-        $booking->snap_token = null;                 // kalau nanti mau pakai payment gateway
-        $booking->date      = $request->date;
-        $booking->duration  = $request->duration;
-        $booking->total     = $item->price;          // total dari harga item
-        $booking->dp        = $request->dp ?? 0;     // DP user, default 0
-        $booking->fine      = 0;                     // denda dasar (misal kerusakan) default 0
-        $booking->delay     = 0;                     // lama keterlambatan, default 0
-        $booking->status    = 'pending';             // default pending
+        $booking = Booking::create([
+            'user_id'      => Auth::id(),                // user login
+            'item_id'      => $item->id,
+            'booking_code' => 'BK-' . strtoupper(uniqid()), // kode unik
+            'snap_token'   => null,                      // kalau nanti mau pakai payment gateway
+            'date'         => $request->date,
+            'duration'     => $request->duration,
+            'total'        => $item->price,              // total dari harga item
+            'dp'           => $request->dp ?? 0,         // DP user, default 0
+            'fine'         => 0,                         // denda default 0
+            'delay'        => 0,                         // keterlambatan default 0
+            'status'       => 'pending',                 // default pending
+        ]);
 
-        $booking->save();
 
         return redirect()->route('bookings.index')
             ->with('success', 'Booking berhasil dibuat!');

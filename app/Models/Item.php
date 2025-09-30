@@ -40,4 +40,9 @@ class Item extends Model
     {
         return $this->hasMany(Booking::class);
     }
+
+    public function itemRatings()
+    {
+        return $this->hasMany(ItemRating::class);
+    }
 }
