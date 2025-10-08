@@ -10,6 +10,6 @@ class HistoryBookingController extends Controller
     public function index()
     {
         $bookings = Booking::with(['user', 'item'])->latest()->get();
-        return view('admin.bookings.index', compact('bookings'));
+        return view('pages.admin.bookings.index', compact('bookings'));
     }
 }

@@ -29,7 +29,7 @@ class ItemImageController extends Controller
     public function edit($id)
     {
         $image = ItemImage::findOrFail($id);
-        return view('admin.item_images.edit', compact('image'));
+        return view('pages.admin.item_images.edit', compact('image'));
     }
 
     public function update(Request $request, $id)

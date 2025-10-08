@@ -35,7 +35,7 @@ class BookingController extends Controller
     // Form booking untuk item tertentu
     public function create(Item $item)
     {
-        return view('bookings.create', compact('item'));
+        return view('pages.bookings.create', compact('item'));
     }
 
     // Simpan booking

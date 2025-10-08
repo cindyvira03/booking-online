@@ -13,12 +13,12 @@ class CategoryController extends Controller
     {
         $categories = Category::withCount('items')->get();
 
-        return view('category.index', compact('categories'));
+        return view('pages.admin.categories.index', compact('categories'));
     }
 
     public function create()
     {
-        return view('category.create');
+        return view('pages.admin.categories.create');
     }
 
     public function store(Request $request)
@@ -43,7 +43,7 @@ class CategoryController extends Controller
     public function edit($id)
     {
         $category = Category::findOrFail($id);
-        return view('category.edit', compact('category'));
+        return view('pages.admin.categories.edit', compact('category'));
     }
 
     // Update category

@@ -15,7 +15,7 @@ class StoreController extends Controller
     public function edit($id)
     {
         $store = Store::findOrFail($id);
-        return view('store.edit', compact('store'));
+        return view('pages.admin.stores.edit', compact('store'));
     }
 
     /**
@@ -57,7 +57,7 @@ class StoreController extends Controller
             ]);
         }
 
-        return redirect()->route('store.edit', $store->id)
+        return redirect()->route('admin.store.edit', $store->id)
             ->with('success', 'Store berhasil diperbarui.');
     }
 }

@@ -13,14 +13,14 @@ class HomeController extends Controller
     public function index()
     {
         $items = Item::with('category', 'images')->get();
-        return view('home.index', compact('items'));
+        return view('pages.home.index', compact('items'));
     }
 
     // Tampilkan detail item
     public function show($id)
     {
         $item = Item::findOrFail($id);
-        return view('home.show', compact('item'));
+        return view('pages.home.show', compact('item'));
     }
 
     // Lihat history booking user login
@@ -36,6 +36,6 @@ class HomeController extends Controller
             ->latest()
             ->paginate(10);
 
-        return view('home.history', compact('bookings', 'status'));
+        return view('pages.home.history', compact('bookings', 'status'));
     }
 }

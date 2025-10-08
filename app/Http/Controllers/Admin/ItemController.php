@@ -16,7 +16,7 @@ class ItemController extends Controller
     {
         $items = Item::active()->with('category')->latest()->get(); // ambil juga data category
 
-        return view('item.index', compact('items'));
+        return view('pages.admin.items.index', compact('items'));
     }
 
     // Menampilkan form create item
@@ -24,7 +24,7 @@ class ItemController extends Controller
     {
         $categories = Category::select('id', 'category_name')->get();
         // ambil kategori untuk select dropdown
-        return view('item.create', compact('categories'));
+        return view('pages.admin.items.create', compact('categories'));
     }
 
     public function store(Request $request)
@@ -77,7 +77,7 @@ class ItemController extends Controller
     {
         $item = Item::with(['category', 'images'])->findOrFail($id);
 
-        return view('item.show', compact('item'));
+        return view('pages.admin.items.show', compact('item'));
     }
 
 
@@ -87,7 +87,7 @@ class ItemController extends Controller
         $item = Item::findOrFail($id);
         $categories = Category::withCount('items')->select('id', 'category_name')->get();
 
-        return view('item.edit', compact('item', 'categories'));
+        return view('pages.admin.items.edit', compact('item', 'categories'));
     }
 
     // Update item
